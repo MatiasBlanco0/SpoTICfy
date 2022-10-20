@@ -17,6 +17,15 @@ const getArtistas = (_, res) => {
             ...
         ]
     */
+    conn.execute('SELECT artistas.id, artistas.nombre FROM artistas', (err, rows) => {
+        if (err) {
+            console.log("Error: ", err);
+            return res.sendStatus(500);
+        }
+        else {
+            return res.json(rows);
+        }
+    });
 };
 
 const getArtista = (req, res) => {
@@ -29,6 +38,16 @@ const getArtista = (req, res) => {
             "nombre": "Nombre del artista"
         }
     */
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json("El id no es un número entero");
+    conn.execute('SELECT artistas.id, artistas.nombre FROM artistas WHERE artistas.id = ?', [id], (err, rows) => {
+        if(err){
+            console.log("Error: ", err);
+            return res.sendStatus(500);
+        }
+        if (rows.length === 0) return res.status(404).json("No se encontró al artista");
+        else return res.json(rows);
+    });
 };
 
 const createArtista = (req, res) => {
@@ -40,6 +59,17 @@ const createArtista = (req, res) => {
             "nombre": "Nombre del artista",
         }
     */
+    const nombre = req.body.nombre;
+    if (!nombre) return res.status(400).json("Ingrese un nombre válido");
+    conn.execute('INSERT INTO artistas(nombre) VALUES(?)', [nombre], (err, rows) => {
+        if(err) {
+            console.log("Error: ", err);
+            return res.sendStatus(500);
+        }
+        else {
+            return res.json("Artista creado");
+        }
+    })
 };
 
 const updateArtista = (req, res) => {
