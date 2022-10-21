@@ -19,6 +19,7 @@ const getArtistas = (_, res) => {
     */
     conn.execute('SELECT artistas.id, artistas.nombre FROM artistas', (err, rows) => {
         if (err) {
+            // La unica posibilidad de error en esta query es uno interno, ejemplo, no se conecto a la base de datos
             console.log("Error: ", err);
             return res.sendStatus(500);
         }
@@ -38,13 +39,16 @@ const getArtista = (req, res) => {
             "nombre": "Nombre del artista"
         }
     */
+   // parseInt devuelve NaN si no se puede convertir el string a int
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json("El id no es un número entero");
     conn.execute('SELECT artistas.id, artistas.nombre FROM artistas WHERE artistas.id = ?', [id], (err, rows) => {
         if(err){
+            // La unica posibilidad de error en esta query es uno interno, ejemplo, no se conecto a la base de datos
             console.log("Error: ", err);
             return res.sendStatus(500);
         }
+        // Si rows es un array vacio, significa que no hay un artista con el id especificado
         if (rows.length === 0) return res.status(404).json("No se encontró al artista");
         else return res.json(rows);
     });
@@ -60,9 +64,12 @@ const createArtista = (req, res) => {
         }
     */
     const nombre = req.body.nombre;
+    // Si nombre es un string vacio, se devulve una respuesta de status 400 (Bad Request)
     if (!nombre) return res.status(400).json("Ingrese un nombre válido");
     conn.execute('INSERT INTO artistas(nombre) VALUES(?)', [nombre], (err, rows) => {
         if(err) {
+            // La unica posibilidad de error en esta query es uno interno, ejemplo, no se conecto a la base de datos.
+            // No puede tirar un error "Duplicate Entry", porque el nombre no es el campo primario
             console.log("Error: ", err);
             return res.sendStatus(500);
         }
