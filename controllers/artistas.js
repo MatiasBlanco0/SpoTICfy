@@ -128,13 +128,13 @@ const getAlbumesByArtista = (req, res) => {
     // Deberían devolver los datos de la misma forma que getAlbumes
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json("El id no es un numero entero");
-    conn.execute('SELECT albumes.id, albumes.nombre, albumes.artista AS nombre_artista FROM albumes WHERE albumes.artista = ?', [id], (err, rows) => {
+    conn.execute('SELECT albumes.id, albumes.nombre, artistas.nombre AS nombre_artista FROM albumes INNER JOIN artistas ON albumes.artista = artistas.id WHERE albumes.artista = ?', [id], (err, rows) => {
         if (err) {
             console.log("Error: ", err);
             return res.sendStatus(500);
         }
         else {
-            return res.json("Se encontraron albumes");
+            return res.json(rows);
         }
     })
 };
