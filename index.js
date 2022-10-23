@@ -28,6 +28,10 @@ app.post('/artistas', artistas.createArtista);
 
 app.put('/artistas/:id', artistas.updateArtista);
 
+app.del('/artistas/:id', artistas.deleteArtista);
+
+app.get('/artistas/:id/albumes', artistas.getAlbumesByArtista);
+
 // Albumes
 // Completar con las rutas de albumes
 // Para acceder a cada funcion de albumes, se debe hacer de la siguiente forma:

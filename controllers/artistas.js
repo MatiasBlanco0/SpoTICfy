@@ -109,12 +109,34 @@ const updateArtista = (req, res) => {
 const deleteArtista = (req, res) => {
     // Completar con la consulta que elimina un artista
     // Recordar que los parámetros de una consulta DELETE se encuentran en req.params
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json("El id no es un numero entero");
+    conn.execute('DELETE FROM artistas WHERE artistas.id = ?', [id], (err, rows) => {
+        if (err) {
+            console.log("Error: ", err);
+            return res.sendStatus(500);
+        }
+        else {
+            return res.json("Artista borrado");
+        }
+    })
 };
 
 const getAlbumesByArtista = (req, res) => {
     // Completar con la consulta que devuelve las canciones de un artista 
     // Recordar que los parámetros de una consulta GET se encuentran en req.params
     // Deberían devolver los datos de la misma forma que getAlbumes
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json("El id no es un numero entero");
+    conn.execute('SELECT albumes.id, albumes.nombre, albumes.artista AS nombre_artista FROM albumes WHERE albumes.artista = ?', [id], (err, rows) => {
+        if (err) {
+            console.log("Error: ", err);
+            return res.sendStatus(500);
+        }
+        else {
+            return res.json("Se encontraron albumes");
+        }
+    })
 };
 
 const getCanionesByArtista = (req, res) => {
