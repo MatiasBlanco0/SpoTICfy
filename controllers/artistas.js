@@ -144,6 +144,17 @@ const getCanionesByArtista = (req, res) => {
     // (tener en cuenta que las canciones están asociadas a un álbum, y los álbumes a un artista)
     // Recordar que los parámetros de una consulta GET se encuentran en req.params
     // Deberían devolver los datos de la misma forma que getCanciones
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json("El id no es un numero entero");
+    conn.execute('SELECT canciones.id, canciones.nombre, artistas.nombre AS nombre_artista, albumes.nombre AS nombre_album, canciones.duracion, canciones.reproducciones FROM canciones INNER JOIN albumes ON canciones.album = albumes.id INNER JOIN artistas ON albumes.artista = artistas.id WHERE artistas.id = ?', [id], (err, rows) => {
+        if (err) {
+            console.log("Error: ", err);
+            return res.sendStatus(500);
+        }
+        else {
+            return res.json(rows);
+        }
+    })
 };
 
 module.exports = {

@@ -32,6 +32,7 @@ app.del('/artistas/:id', artistas.deleteArtista);
 
 app.get('/artistas/:id/albumes', artistas.getAlbumesByArtista);
 
+app.get('/artistas/:id/canciones', artistas.getCanionesByArtista);
 // Albumes
 // Completar con las rutas de albumes
 // Para acceder a cada funcion de albumes, se debe hacer de la siguiente forma:
