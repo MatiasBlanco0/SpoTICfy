@@ -41,6 +41,8 @@ app.get('/artistas/:id/canciones', artistas.getCanionesByArtista);
 // ...
 app.get('/albumes', albumes.getAlbumes);
 
+app.get('/albumes/:id', albumes.getAlbum);
+
 // Canciones
 // Completar con las rutas de canciones
 // Para acceder a cada funcion de canciones, se debe hacer de la siguiente forma:
