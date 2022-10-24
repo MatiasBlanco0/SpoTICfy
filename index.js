@@ -28,7 +28,7 @@ app.post('/artistas', artistas.createArtista);
 
 app.put('/artistas/:id', artistas.updateArtista);
 
-app.del('/artistas/:id', artistas.deleteArtista);
+app.delete('/artistas/:id', artistas.deleteArtista);
 
 app.get('/artistas/:id/albumes', artistas.getAlbumesByArtista);
 
