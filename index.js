@@ -39,6 +39,7 @@ app.get('/artistas/:id/canciones', artistas.getCanionesByArtista);
 // albumes.getAlbumes;
 // albumes.getAlbum;
 // ...
+app.get('/albumes', albumes.getAlbumes);
 
 // Canciones
 // Completar con las rutas de canciones
