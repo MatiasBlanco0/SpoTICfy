@@ -43,7 +43,7 @@ Content-Type: application/json
 
 {
   "nombre": "Album 2",
-  "artista": 3,
+  "artista": 3
 }
 
 ### Actualizar un album
@@ -96,7 +96,7 @@ DELETE http://localhost:3000/canciones/3 HTTP/1.1
 
 ### Reproducir una cancion
 
-GET http://localhost:3000/canciones/1/reproducir HTTP/1.1
+PUT http://localhost:3000/canciones/1/reproducir HTTP/1.1
 
 ### Obtener canciones de un album
 
