@@ -111,7 +111,7 @@ const deleteArtista = (req, res) => {
     // Recordar que los parámetros de una consulta DELETE se encuentran en req.params
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json("El id no es un numero entero");
-    conn.execute('DELETE FROM artistas WHERE artistas.id = ?', [id], (err, _) => {
+    conn.execute('DELETE artistas, albumes, canciones FROM artistas INNER JOIN albumes ON albumes.artista = artistas.id INNER JOIN canciones ON canciones.album = albumes.id WHERE artistas.id = ?', [id], (err, _) => {
         if (err) {
             console.log("Error: ", err);
             return res.sendStatus(500);
