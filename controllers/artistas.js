@@ -111,7 +111,7 @@ const deleteArtista = (req, res) => {
     // Recordar que los parámetros de una consulta DELETE se encuentran en req.params
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json("El id no es un numero entero");
-    conn.execute('DELETE canciones, artistas, albumes FROM canciones INNER JOIN albumes ON canciones.album = albumes.id INNER JOIN artistas ON albumes.artista = artistas.id WHERE artistas.id = ?', [id], (err, _) => {
+    conn.execute('DELETE canciones, artistas, albumes FROM artistas LEFT JOIN albumes ON artistas.id = albumes.artista LEFT JOIN canciones ON albumes.id = canciones.album WHERE artistas.id = ?', [id], (err, _) => {
         if (err) {
             console.log("Error: ", err);
             return res.sendStatus(500);
@@ -128,7 +128,7 @@ const getAlbumesByArtista = (req, res) => {
     // Deberían devolver los datos de la misma forma que getAlbumes
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json("El id no es un numero entero");
-    conn.execute('SELECT albumes.id, albumes.nombre, artistas.nombre AS nombre_artista FROM albumes INNER JOIN artistas ON albumes.artista = artistas.id WHERE albumes.artista = ?', [id], (err, rows) => {
+    conn.execute('SELECT albumes.id, albumes.nombre, artistas.nombre AS nombre_artista FROM albumes LEFT JOIN artistas ON albumes.artista = artistas.id WHERE albumes.artista = ?', [id], (err, rows) => {
         if (err) {
             console.log("Error: ", err);
             return res.sendStatus(500);
@@ -146,7 +146,7 @@ const getCanionesByArtista = (req, res) => {
     // Deberían devolver los datos de la misma forma que getCanciones
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json("El id no es un numero entero");
-    conn.execute('SELECT canciones.id, canciones.nombre, artistas.nombre AS nombre_artista, albumes.nombre AS nombre_album, canciones.duracion, canciones.reproducciones FROM canciones INNER JOIN albumes ON canciones.album = albumes.id INNER JOIN artistas ON albumes.artista = artistas.id WHERE artistas.id = ?', [id], (err, rows) => {
+    conn.execute('SELECT canciones.id, canciones.nombre, artistas.nombre AS nombre_artista, albumes.nombre AS nombre_album, canciones.duracion, canciones.reproducciones FROM canciones LEFT JOIN albumes ON canciones.album = albumes.id LEFT JOIN artistas ON albumes.artista = artistas.id WHERE artistas.id = ?', [id], (err, rows) => {
         if (err) {
             console.log("Error: ", err);
             return res.sendStatus(500);

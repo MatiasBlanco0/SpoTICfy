@@ -25,7 +25,7 @@ const getCanciones = (_, res) => {
             ...
         ]
     */
-    conn.execute('SELECT canciones.id, canciones.nombre, artistas.nombre AS nombre_artista, albumes.nombre AS nombre_album, canciones.duracion, canciones.reproducciones FROM canciones INNER JOIN albumes ON albumes.id = canciones.album INNER JOIN artistas ON artistas.id = albumes.artista', (err, rows) => {
+    conn.execute('SELECT canciones.id, canciones.nombre, artistas.nombre AS nombre_artista, albumes.nombre AS nombre_album, canciones.duracion, canciones.reproducciones FROM canciones LEFT JOIN albumes ON albumes.id = canciones.album LEFT JOIN artistas ON artistas.id = albumes.artista', (err, rows) => {
         if (err) {
             console.log("Error: ", err);
             return res.sendStatus(500);
@@ -52,7 +52,7 @@ const getCancion = (req, res) => {
     */
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json("Ingrese un id valido");
-    conn.execute('SELECT canciones.id, canciones.nombre, artistas.nombre AS nombre_artista, albumes.nombre AS nombre_album, canciones.duracion, canciones.reproducciones FROM canciones INNER JOIN albumes ON albumes.id = canciones.album INNER JOIN artistas ON artistas.id = albumes.artista WHERE canciones.id = ?', [id], (err, rows) => {
+    conn.execute('SELECT canciones.id, canciones.nombre, artistas.nombre AS nombre_artista, albumes.nombre AS nombre_album, canciones.duracion, canciones.reproducciones FROM canciones LEFT JOIN albumes ON albumes.id = canciones.album LEFT JOIN artistas ON artistas.id = albumes.artista WHERE canciones.id = ?', [id], (err, rows) => {
         if (err) {
             console.log("Error: ", err);
             return res.sendStatus(500);

@@ -19,7 +19,7 @@ const getAlbumes = (_, res) => {
             ...
         ]
     */
-    conn.execute('SELECT albumes.id, albumes.nombre, artistas.nombre AS nombre_artista FROM albumes INNER JOIN artistas ON albumes.artista = artistas.id', (err, rows) => {
+    conn.execute('SELECT albumes.id, albumes.nombre, artistas.nombre AS nombre_artista FROM albumes LEFT JOIN artistas ON albumes.artista = artistas.id', (err, rows) => {
         if (err) {
             console.log("Error: ", err);
             return res.sendStatus(500);
@@ -43,7 +43,7 @@ const getAlbum = (req, res) => {
     */
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json("El id no es un numero entero");
-    conn.execute('SELECT albumes.id, albumes.nombre, artistas.nombre AS nombre_artista FROM albumes INNER JOIN artistas ON albumes.artista = artistas.id WHERE albumes.id = ?', [id], (err, rows) => {
+    conn.execute('SELECT albumes.id, albumes.nombre, artistas.nombre AS nombre_artista FROM albumes LEFT JOIN artistas ON albumes.artista = artistas.id WHERE albumes.id = ?', [id], (err, rows) => {
         if (err) {
             console.log("Error: ", err);
             return res.sendStatus(500);
@@ -108,7 +108,7 @@ const deleteAlbum = (req, res) => {
     // Recordar que los parámetros de una consulta DELETE se encuentran en req.params
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json("Ingrese un id valido");
-    conn.execute('DELETE albumes, canciones FROM albumes INNER JOIN canciones ON canciones.album = albumes.id WHERE albumes.id = ?', [id], (err, rows) => {
+    conn.execute('DELETE albumes, canciones FROM albumes LEFT JOIN canciones ON canciones.album = albumes.id WHERE albumes.id = ?', [id], (err, rows) => {
         if (err) {
             console.log("Error: ", err);
             return res.sendStatus(500);
@@ -125,7 +125,7 @@ const getCancionesByAlbum = (req, res) => {
     // Deberían devolver los datos de la misma forma que getCanciones
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json("Ingrese un id valido");
-    conn.execute('SELECT canciones.id, canciones.nombre, artistas.nombre AS nombre_artista, albumes.nombre AS nombre_album, canciones.duracion, canciones.reproducciones FROM canciones INNER JOIN albumes ON albumes.id = canciones.album INNER JOIN artistas ON artistas.id = albumes.artista WHERE albumes.id = ?', [id], (err, rows) => {
+    conn.execute('SELECT canciones.id, canciones.nombre, artistas.nombre AS nombre_artista, albumes.nombre AS nombre_album, canciones.duracion, canciones.reproducciones FROM canciones LEFT JOIN albumes ON albumes.id = canciones.album LEFT JOIN artistas ON artistas.id = albumes.artista WHERE albumes.id = ?', [id], (err, rows) => {
         if (err) {
             console.log("Error: ", err);
             return res.sendStatus(500);
