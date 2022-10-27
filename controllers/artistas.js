@@ -111,7 +111,7 @@ const deleteArtista = (req, res) => {
     // Recordar que los parámetros de una consulta DELETE se encuentran en req.params
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json("El id no es un numero entero");
-    conn.execute('DELETE artistas, albumes, canciones FROM artistas INNER JOIN albumes ON albumes.artista = artistas.id INNER JOIN canciones ON canciones.album = albumes.id WHERE artistas.id = ?', [id], (err, _) => {
+    conn.execute('DELETE canciones, artistas, albumes FROM canciones INNER JOIN albumes ON canciones.album = albumes.id INNER JOIN artistas ON albumes.artista = artistas.id WHERE artistas.id = ?', [id], (err, _) => {
         if (err) {
             console.log("Error: ", err);
             return res.sendStatus(500);
@@ -146,7 +146,7 @@ const getCanionesByArtista = (req, res) => {
     // Deberían devolver los datos de la misma forma que getCanciones
     const id = parseInt(req.params.id);
     if (isNaN(id)) return res.status(400).json("El id no es un numero entero");
-    conn.execute('SELECT canciones.id, canciones.nombre, artistas.nombre AS nombre_artista, albumes.nombre AS nombre_album, canciones.duracion, canciones.reproducciones FROM canciones INNER JOIN albumes ON canciones.album = albumes.id WHERE albumes.artista = ?', [id], (err, rows) => {
+    conn.execute('SELECT canciones.id, canciones.nombre, artistas.nombre AS nombre_artista, albumes.nombre AS nombre_album, canciones.duracion, canciones.reproducciones FROM canciones INNER JOIN albumes ON canciones.album = albumes.id INNER JOIN artistas ON albumes.artista = artistas.id WHERE artistas.id = ?', [id], (err, rows) => {
         if (err) {
             console.log("Error: ", err);
             return res.sendStatus(500);

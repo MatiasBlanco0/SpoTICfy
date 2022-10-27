@@ -24,10 +24,12 @@ Content-Type: application/json
 
 {
     "nombre": "Marruecos",
-    "album": 11,
+    "album": 12,
     "duracion": 100
 }
 ###
 DELETE http://localhost:3000/albumes/11 HTTP/1.1
 ###
 DELETE http://localhost:3000/artistas/9 HTTP/1.1
+###
+GET http://localhost:3000/artistas/9/canciones HTTP/1.1
