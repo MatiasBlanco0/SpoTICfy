@@ -58,7 +58,7 @@ const getCancion = (req, res) => {
             return res.sendStatus(500);
         }
         else {
-            return res.json(rows);
+            return res.json(rows[0]);
         }
     })
 };

@@ -50,7 +50,7 @@ const getArtista = (req, res) => {
         }
         // Si rows es un array vacio, significa que no hay un artista con el id especificado
         if (rows.length === 0) return res.status(404).json("No se encontró al artista");
-        else return res.json(rows);
+        else return res.json(rows[0]);
     });
 };
 

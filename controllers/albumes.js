@@ -49,7 +49,7 @@ const getAlbum = (req, res) => {
             return res.sendStatus(500);
         }
         else {
-            res.json(rows);
+            res.json(rows[0]);
         }
     })
 };
